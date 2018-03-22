@@ -48,7 +48,6 @@ var Chat = {
             display.appendChild(blog);
             output(input.value);
             input.value = "";
-
         }
 
         const output = (input) => {
