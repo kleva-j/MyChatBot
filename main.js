@@ -39,13 +39,12 @@ var Chat = {
         }
 
         function print(){
-            var blog = document.createElement('li');
-            var chat_bubble = document.createElement("div");
-            blog.setAttribute('class', 'blog');
-            chat_bubble.setAttribute('class', 'right');
-            chat_bubble.innerText = input.value;
-            blog.appendChild(chat_bubble);
-            display.appendChild(blog);
+            var html = `<li class="blog">
+                                <div class="right">
+                                    ${input.value}
+                                </div>
+                            </li>`;
+            display.innerHTML += html;
             output(input.value);
             input.value = "";
         }
@@ -61,16 +60,15 @@ var Chat = {
             }
 
             finally{
-                var vblog = document.createElement('li');
-                var chat_bubble = document.createElement('div');
-                vblog.setAttribute('class', 'blog');
-                chat_bubble.setAttribute('class', 'left');
+                var html = `<li class="blog">
+                                    <div class="left">
+                                        ${product}
+                                    </div>
+                                </li>`;
                 setTimeout(function(){
-                    chat_bubble.innerText = product;
-                    vblog.appendChild(chat_bubble);
-                    display.appendChild(vblog);
+                    display.innerHTML += html;
                     speak(product);
-                }, 800)
+                }, 800);
             }
 
         }
