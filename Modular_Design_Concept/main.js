@@ -1,4 +1,4 @@
-/* modules
+/* Modules
 
 i.   Eventlisteners.
 ii.  Speech Synthesis Utterance.
@@ -12,7 +12,9 @@ vii. The input reformation section.
 
 function speak(string){
     var utterance = new SpeechSynthesisUtterance();
-    utterance.voice = speechSynthesis.getVoices().filter(function(voice){return voice.name == "Microsoft Hazel Desktop - English (Great Britain)";})[0];
+    utterance.voice = speechSynthesis.getVoices().filter(function(voice){
+        return voice.name == "Microsoft Hazel Desktop - English (Great Britain)";
+    })[0];
     utterance.text = string;
     utterance.lang = "en-US";
     utterance.volume = 1; //0-1 interval
@@ -27,68 +29,74 @@ function speak(string){
     var Chat = {
 
         init: () => {
-            var display = document.querySelector('.display');
-        document.querySelector('.box').addEventListener('click', clickPress);
-        document.querySelector('#input').addEventListener('keypress', keyPress);
-
-        function clickPress(){
-            if(input.value) print();
-        };
-        function keyPress(e){
-            if(e.keyCode === 13){
-                if(input.value) print();
+            const keyPress = (e) => {
+                if(e.keyCode === 13) if(input.value) print()
             }
-        }
+            const clickPress = () => {
+                if(input.value) print()
+            }
 
-        function print(){
-            var html = `<li class="blog">
+            var display = document.querySelector('.display');
+            document.querySelector('.box').addEventListener('click', clickPress);
+            document.querySelector('#input').addEventListener('keypress', keyPress);
+
+
+            function print() {
+                var html = `<li class="blog">
                                 <div class="right">
                                     ${input.value}
                                 </div>
                             </li>`;
-            display.innerHTML += html;
-            output(input.value);
-            input.value = "";
-        }
-
-        const output = (input) => {
-            try{
-                var product = input + "=" + eval(input);
-            } catch(e){
-                var text = (input.toLowerCase()).replace(/[^\w\s\d]/gi, ""); //remove all chars except words, space and
-                text = text.replace(/ a /g, " ").replace(/i feel /g, "").replace(/whats/g, "what is").replace(/please /g, "").replace(/ please/g, "");
-                if(compare(trigger, reply, text)) var product = compare(trigger, reply, text);
-                else var product = alternative[Math.floor(Math.random()*alternative.length)];
+                display.innerHTML += html;
+                output(input.value);
+                input.value = "";
             }
 
-            finally{
-                var html = `<li class="blog">
+            const output = (input) => {
+                try{
+                    var product = input + "=" + eval(input);
+                } catch(e){
+                    var text = (input.toLowerCase()).replace(/[^\w\s\d]/gi, ""); //remove all chars except words, space and
+                    text = text
+                        .replace(/ a /g, " ")
+                        .replace(/i feel /g, "")
+                        .replace(/whats/g, "what is")
+                        .replace(/please /g, "")
+                        .replace(/ please/g, "");
+                        
+                    if(compare(trigger, reply, text)) var product = compare(trigger, reply, text);
+                    else var product = alternative[Math.floor(Math.random()*alternative.length)];
+                }
+
+                finally{
+                    var html = `<li class="blog">
                                     <div class="left">
                                         ${product}
                                     </div>
                                 </li>`;
-                setTimeout(function(){
-                    display.innerHTML += html;
-                    speak(product);
-                }, 800);
+                    setTimeout(function(){
+                        display.innerHTML += html;
+                        speak(product);
+                    }, 500);
+                }
+
             }
 
-        }
+            const compare = (arr, array, string) => {
 
-        const compare = (arr, array, string) => {
-
-            var item;
-            for(var x=0; x<arr.length; x++){
-                for(var y=0; y<array.length; y++){
-                    if(arr[x][y] == string){
-                        items = array[x];
-                        item =  items[Math.floor(Math.random()*items.length)];
+                var item;
+                for(var x=0; x<arr.length; x++){
+                    for(var y=0; y<array.length; y++){
+                        if(arr[x][y] == string){
+                            items = array[x];
+                            item =  items[Math.floor(Math.random()*items.length)];
+                        }
                     }
                 }
+                return item;
             }
-            return item;
+
         }
-    }
 
     }
 
@@ -130,5 +138,6 @@ function speak(string){
     var alternative = ["What...", "Eh...", "Yeah", "ok", "Sorry, I do not understand what you are saying"];
 
     window.onload = Chat.init();
+
 })()
 
